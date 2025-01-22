@@ -3,19 +3,28 @@ import "./App.css";
 
 function App() {
   const initialState = [
-    { id: 1, name: "John", age: 20 },
-    { id: 2, name: "Doe", age: 21 },
+    { id: new Date().getTime(), name: "John", age: 20 },
+    { id: new Date().getTime()+1, name: "Doe", age: 21 },
   ];
   const [users, setUsers] = useState(initialState);
   // TODO: 이름과 나이를 각각 상태로 정의하세요. 초기값은 빈문자열("")입니다.
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
 
+  const reset = function () {
+    setName("");
+    setAge("");
+    return;
+  };
+
   const addUser = (e) => {
     e.preventDefault();
     // TODO: 이름과 나이가 모두 입력되지 않았을 때는 alert 처리하고 함수를 종료하세요. 논리합연산자 (||) 를 이용하세요.
     if (!name || !age) {
       alert("이름과 나이를 모두 입력해 주세요!");
+      return;
+    } else if (age < 0 || age%1 !== 0) {
+      alert("나이는 정수로 입력해 주세요!")
       return;
     }
     // TODO: 사용자 리스트 상태를 업데이트 하세요. spread operator 를 사용하고, 추가되는 id는 현재 시간을 밀리초 단위로 반환하는 Date.now() 를 사용하세요.
@@ -26,6 +35,7 @@ function App() {
     };
 
     setUsers([...users, newUser]);
+    reset();
   };
 
   const removeUser = (id) => {
@@ -74,6 +84,7 @@ function App() {
       </form>
       <ul style={{padding: "0px",}}>
         {/* TODO: map 메소드를 이용해서 user 리스트를 렌더링하세요.  */}
+        {/* 이름: John, 나이: 20 [삭제] 버튼이 하나의 행에 나올 수 있도록 해보세요. (hint: flex) */}
         {users.map(function (u) {
           return (
             <div style={style}>
@@ -83,7 +94,7 @@ function App() {
             </div>
           );
         })}
-        {/* 이름: John, 나이: 20 [삭제] 버튼이 하나의 행에 나올 수 있도록 해보세요. (hint: flex) */}
+
       </ul>
     </>
   );
